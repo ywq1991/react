@@ -10,8 +10,6 @@ class App extends Component {
             // show: true,
             list: []
         }
-        // this.handleToggle = this.handleToggle.bind(this)
-        this.handleAddItem = this.handleAddItem.bind(this)
     }
 
     render() {
@@ -55,13 +53,13 @@ class App extends Component {
         )
     }
 
-    handleAddItem() {
+    handleAddItem = () => {
         this.setState((prevState) => ({
             list: [...prevState.list, 'item']
         }))
     }
 
-    // handleToggle() {
+    // handleToggle = () => {
     //     this.setState(() => ({
     //         show: !this.state.show
     //     }))

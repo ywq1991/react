@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 class TodoItem extends Component {
     constructor(props) {
         super(props)
-        this.handleItem = this.handleItem.bind(this)
     }
 
     render() {
@@ -13,10 +12,10 @@ class TodoItem extends Component {
             <div onClick={this.handleItem}>
                 {item}
             </div>
-        ) 
+        )
     }
 
-    handleItem() {
+    handleItem = () => {
         const { deleteItem, index } = this.props
         deleteItem(index)
     }

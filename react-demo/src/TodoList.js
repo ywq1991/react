@@ -11,9 +11,6 @@ class TodoList extends Component {
             inputValue: '',
             list: []
         }
-        this.handleInputValue = this.handleInputValue.bind(this)
-        this.handleBtnClick = this.handleBtnClick.bind(this)
-        this.handleItemDelete = this.handleItemDelete.bind(this)
     }
 
     render() {
@@ -61,21 +58,21 @@ class TodoList extends Component {
         })
     }
 
-    handleInputValue(e) {
+    handleInputValue = e => {
         const inputValue = e.target.value
         this.setState(() => ({
             inputValue
         }))
     }
 
-    handleBtnClick() {
+    handleBtnClick = () => {
         this.setState((prevState) => ({
             list: [...prevState.list, prevState.inputValue],
             inputValue: ''
         }))
     }
 
-    handleItemDelete(index) {
+    handleItemDelete = index => {
         this.setState((prevState) => {
             const list = [...prevState.list]
             list.splice(index, 1)
