@@ -18,7 +18,7 @@ export default (state = defaultState, action) => {
     if (action.type === CHANGE_INPUT_VALUE) {
         newState.inputValue = action.value
     }
-    
+
     if (action.type === ADD_TODO_ITEM) {
         newState.list.push(newState.inputValue)
         newState.inputValue = ''
