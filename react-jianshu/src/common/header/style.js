@@ -47,7 +47,7 @@ export const NavItem = styled.div`
 export const SearchWrapper = styled.div`
     position: relative;
     float: left;
-    .iconfont {
+    .zoom {
         position: absolute;
         right: 5px;
         bottom: 5px;
@@ -151,6 +151,7 @@ export const Addition = styled.div`
 	right: 0;
 	top: 0;
 	height: 56px;
+    cursor: pointer;
 `
 
 export const Button = styled.div`
