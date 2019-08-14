@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
+import { BrowserRouter as Router, Link } from "react-router-dom"
 import { connect } from 'react-redux'
 import { CSSTransition } from 'react-transition-group'
 import { actionCreators } from './store'
+import { actionCreators as loginActionCreators } from '../../pages/login/store'
 import {
     HeaderWrapper,
     Logo,
@@ -41,6 +43,7 @@ class Header extends Component {
                         <SearchInfoSwitch onClick={() => {
                             handleChangePage(page, totalPage, this.spinIcon)
                         }}>
+                            {/* ref */}
                             <i ref={icon => this.spinIcon = icon} className="iconfont spin">&#xe851;</i>
                             换一批
                         </SearchInfoSwitch>
@@ -54,14 +57,25 @@ class Header extends Component {
     }
 
     render() {
-        const { focused, handleInputFocus, handleInputBlur } = this.props
+        const { focused, handleInputFocus, handleInputBlur, list, login, logout } = this.props
         return (
             <HeaderWrapper>
-                <Logo/>
+                <Router>
+                    <Link to='/'>
+                        <Logo/>
+                    </Link>
+                </Router>
+
                 <Nav>
                     <NavItem className="left active">首页</NavItem>
                     <NavItem className="left">下载App</NavItem>
-                    <NavItem className="right">登录</NavItem>
+                    {
+                        login ?
+                            <NavItem onClick={logout} className='right'>退出</NavItem> :
+                            <Router>
+                                <Link to='/login'><NavItem className='right'>登陆</NavItem></Link>
+                            </Router>
+                    }
                     <NavItem className="right">
                         <i className="iconfont">&#xe636;</i>
                     </NavItem>
@@ -73,7 +87,9 @@ class Header extends Component {
                         >
                             <NavSearch
                                 className={focused ? 'focused' : ''}
-                                onFocus={handleInputFocus}
+                                onFocus={() => {
+                                    handleInputFocus(list)
+                                }}
                                 onBlur={handleInputBlur}
                             >
                             </NavSearch>
@@ -101,15 +117,17 @@ const mapStateToProps = (state) => {
         list: state.getIn(['header', 'list']),
         page: state.getIn(['header', 'page']),
         totalPage: state.getIn(['header', 'totalPage']),
-        mouseIn: state.getIn(['header', 'mouseIn'])
+        mouseIn: state.getIn(['header', 'mouseIn']),
+        login: state.getIn(['login', 'login'])
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        handleInputFocus: () => {
-            dispatch(actionCreators.getList())
+        handleInputFocus: (list) => {
+            list.size === 0 && dispatch(actionCreators.getList())
             dispatch(actionCreators.searchFocus())
+
         },
         handleInputBlur: () => {
             dispatch(actionCreators.searchBlur())
@@ -121,6 +139,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(actionCreators.mouseLeave())
         },
         handleChangePage: (page, totalPage, spin) => {
+            // replace 只保留数字
             let originAngle = Number(spin.style.transform.replace(/[^0-9]/ig, ''))
             originAngle = originAngle ? originAngle : 0
             spin.style.transform = `rotate(${originAngle + 360}deg)`
@@ -129,6 +148,9 @@ const mapDispatchToProps = (dispatch) => {
             } else {
                 dispatch(actionCreators.changePage(1))
             }
+        },
+        logout() {
+            dispatch(loginActionCreators.logout())
         }
     }
 }
